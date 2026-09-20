@@ -33,7 +33,7 @@ void serialTask(void *param)
         {
             Serial.println(outputBuffer);
         }
-        
+
         vTaskDelay(pdMS_TO_TICKS(1));
     }
 }

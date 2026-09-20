@@ -14,13 +14,7 @@
 static QueueHandle_t rotationQueue = xQueueCreate(1, sizeof(double));
 static QueueHandle_t rpmQueue = xQueueCreate(1, sizeof(int));
 
-/**
- * @brief The function that drives motor according to encoder step
- *
- */
 static void driveMotor(int pinRotation, int pinDuty);
-
-
 
 void motorTask(void *pvParameters)
 {

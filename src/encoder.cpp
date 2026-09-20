@@ -19,27 +19,10 @@ static volatile int encoderErrorState = ENCODER_NO_ERROR;
 static volatile unsigned long lastStepTime = 0;
 static volatile float rpm = 0;
 
-/**
- * @brief Returns the indes of encoder step as they are sequential
- *
- * @return int Encoder step index in the sequence
- */
 static int findEncoderStepIndex();
 
-/**
- * @brief Checks if the RPM value is too high
- *
- * @param pinRpm Current RPM value
- * @return float Corrected RPM value
- */
 static float checkRpmAbsurdity(float pinRpm);
 
-/**
- * @brief Checks and resets if RPM values are sequential
- *
- * @param float Current RPM
- * @return float Corrected RPM value
- */
 static float checkRpmResetTime(float pinRpm);
 
 float getRpm()

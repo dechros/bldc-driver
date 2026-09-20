@@ -16,7 +16,7 @@ static QueueHandle_t currentQueue = xQueueCreate(1, sizeof(float));
 void currentTask(void *pvParameters)
 {
     int sampleCount = 0;
-    float totalCurrent = 0; 
+    float totalCurrent = 0;
     while (1)
     {
         if (sampleCount < CURRENT_SAMPLE)

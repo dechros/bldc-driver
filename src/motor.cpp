@@ -25,6 +25,7 @@ static void driveMotor(int pinRotation, int pinDuty);
 void motorTask(void *pvParameters)
 {
     float duty = 0;
+    int currentRotation = STOP;
     encoderInterrupt();
     while (1)
     {
@@ -33,7 +34,15 @@ void motorTask(void *pvParameters)
         float rpm = getRpm();
         xQueuePeek(rotationQueue, &requestedRotation, portMAX_DELAY);
         xQueuePeek(rpmQueue, &targetRpm, portMAX_DELAY);
-        if (rpm < targetRpm)
+        if (currentRotation != requestedRotation)
+        {
+            duty -= DUTY_RAMP_VAL;
+            if (duty <= MIN_DUTY)
+            {
+                currentRotation = requestedRotation;
+            }
+        }
+        else if (rpm < targetRpm)
         {
             duty += DUTY_RAMP_VAL;
         }
@@ -58,8 +67,8 @@ void motorTask(void *pvParameters)
         {
             duty = MAX_DUTY;
         }
-        serialWrite("Tar Rot : " + String(requestedRotation) + " | Tar RPM : " + String(targetRpm) + " | Cur RPM : " + String(rpm) + " | Duty : " + String(duty) + " | Amper : " + String(current));
-        driveMotor(requestedRotation, (int)duty);
+        serialWrite("Tar Rot : " + String(requestedRotation) + " | Cur Rot : " + String(currentRotation) + " | Tar RPM : " + String(targetRpm) + " | Cur RPM : " + String(rpm) + " | Duty : " + String(duty) + " | Amper : " + String(current));
+        driveMotor(currentRotation, (int)duty);
         vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
